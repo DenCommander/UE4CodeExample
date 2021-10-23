@@ -17,7 +17,7 @@ public:
 	// Sets default values for this component's properties
 	UInventoryComponent();
 	
-	int AmmoCount(FName InAmmoName = NAME_None);
+	int GetAmmoCount(FName InAmmoName = NAME_None);
 	int GetAmmoSlotByName(FName Ammo);
 
 	

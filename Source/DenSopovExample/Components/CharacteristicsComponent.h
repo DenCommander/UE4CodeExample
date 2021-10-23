@@ -24,18 +24,26 @@ public:
 	FDelegateNoParam OnBecomeAlive;
 
 	FDelegateNoParam OnComponentDestroyedDelegate;
-	
+
+	/** "static" implementation made for future. To have an opportunity to add Characteristics component to any actor and make it
+	*damageable. In this case will be very conveniently to use static method of this component like:
+	*UCharacteristicsComponent::GetHealth(AnyActor)
+	*/
 	static float GetHealth(AActor* InActor);
 
 	float GetHealth();	
 
-	//supposed to run only on the server side
+	/** supposed to run only on the server side.
+	 *"static" implementation made for future. To have an opportunity to add Characteristics component to any actor and make it
+	 *damageable. In this case will be very conveniently to use static method of this component like:
+	 *UCharacteristicsComponent::AddHealth(AnyActor,100)
+	 */
 	static void AddHealth(AActor* InActor, float InHealth);
 
-	//supposed to run only on the server side
+	/** supposed to run only on the server side */
 	void AddHealth(float InHealth);	
 
-	//supposed to run only on the server side
+	/** supposed to run only on the server side*/
 	void SetHealth(float InHealth);
 
 	bool IsAlive();
@@ -44,6 +52,7 @@ public:
 	
 protected:
 	void InitializeCharacteristics();
+	
 	// Called when the game starts
 	virtual void BeginPlay() override;
 

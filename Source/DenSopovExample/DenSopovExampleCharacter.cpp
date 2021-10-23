@@ -4,7 +4,6 @@
 
 #include "DenSopovExampleGameMode.h"
 #include "DSE_Projectile.h"
-#include "DrawDebugHelpers.h"
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -107,8 +106,6 @@ void ADenSopovExampleCharacter::BeginPlay()
 	CharComp->OnZeroHealth.AddUObject(this,&ADenSopovExampleCharacter::OnDeath);
 	CharComp->OnBecomeAlive.AddUObject(this,&ADenSopovExampleCharacter::OnRevive);
 }
-
-
 
 void ADenSopovExampleCharacter::Tick(float DeltaTime)
 {
@@ -224,8 +221,7 @@ void ADenSopovExampleCharacter::OnRevive()
 	
 	GetCapsuleComponent()->SetCollisionProfileName(DefaultCapsuleCollisionProfile);
 	
-	GetCharacterMovement()->SetMovementMode(MOVE_Walking);
-		
+	GetCharacterMovement()->SetMovementMode(MOVE_Walking);		
 }
 
 void ADenSopovExampleCharacter::Local_Fire()
@@ -239,8 +235,7 @@ void ADenSopovExampleCharacter::Local_Fire()
 
 	//at clients we need to rapidly reduce ammocount and refresh interface, for this call part of logic only at client
 	//if ammo will reduce only on the server then on the client we can spent more bullets than we have, because of
-	//replication delays (right after shot ammo count will be the same until replication come)
-	
+	//replication delays (right after shot ammo count will be the same until replication come)	
 	if (!UKismetSystemLibrary::IsServer(this))
 	{
 		//on the client we call AddAmmo() to reduce the ammo twice - first on the client side and second on the server in Server_Fire()
@@ -251,7 +246,7 @@ void ADenSopovExampleCharacter::Local_Fire()
 		//if player is the server, then we reduce ammo in Server_Fire, so we don't need to reduce it twice,
 		//because both client and server logic runs on the server.
 		//Then here we only check if ammo is enough to fire
-		if (InventoryComponent->AmmoCount()<=0) return;		
+		if (InventoryComponent->GetAmmoCount()<=0) return;		
 	}
 			
 	//spawning projectiles happens only on the server. Spawntransform calculated on the client, because client-controlled

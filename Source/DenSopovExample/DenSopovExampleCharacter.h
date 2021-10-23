@@ -56,36 +56,24 @@ class ADenSopovExampleCharacter : public ACharacter
 
 	AActor* LookForward();
 
-	void LookForwardPeriodically();
+	void LookForwardPeriodically();	
+
+	FTimerHandle LookForwardTH;
+
+	//-----=====looking for interact actors part end
 
 	UFUNCTION(Server,Unreliable)
-	void Server_StartInteraction(AActor* InteractiveActor);
+    void Server_StartInteraction(AActor* InteractiveActor);
 
 	//interaction logic calls both on the client and on the server for fast response to user input
 	void Mutual_StartInteraction(AActor* InteractiveActor);
 
 	void Local_StartInteraction();
 
-	FTimerHandle LookForwardTH;
-
-	//-----=====looking for interact actors part end
-
 	void Jump();	
 	
 public:
 	ADenSopovExampleCharacter();
-		
-	//friend void ADenSopovExampleGameMode::PlayerDead(ADenSopovExampleCharacter* InCharacter);
-	
-protected:
-	virtual void BeginPlay() override;
-
-	virtual void Tick(float DeltaTime);	
-	
-public:
-
-	UFUNCTION()
-    void DSE_OnMovementModeChanged(ACharacter* Character, EMovementMode PrevMovementMode, uint8 PreviousCustomMode);
 	
 	//delegate to inform animation blueprint about character's jump
 	UPROPERTY(BlueprintAssignable, Category=Gameplay)
@@ -94,7 +82,6 @@ public:
 	//delegate to inform animation blueprint about character's landing
 	UPROPERTY(BlueprintAssignable, Category=Gameplay)
 	FOnLandedDelegate OnLandedDelegate;
-
 	
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
@@ -134,21 +121,31 @@ public:
 
 protected:
 	
+	virtual void BeginPlay() override;
+
+	virtual void Tick(float DeltaTime);
+
+	UFUNCTION()
+    void DSE_OnMovementModeChanged(ACharacter* Character, EMovementMode PrevMovementMode, uint8 PreviousCustomMode);
+
+	/* called when revive started*/
 	void OnRevive();
 	
 	/** Fires a projectile. */
 	UFUNCTION( Server, Reliable )
 	void Server_Fire(FTransform ProjSpawnTransform);
 
-	//onrep health goes to all connections, then Characteristics comp call delegate onzerohealth, actor binded to onzerohealth
-	//and launching Death() on the all connections
+	//onrep health goes to all connections, then Characteristics comp call delegate onzerohealth, then actor
+	//launch OnDeath() on the all connections (because actor binded to onzerohealth event)
 	void OnDeath();	
 
+	//initial call of fire on the client
 	void Local_Fire();
 
 	//calculates start position and rotation of projectile
 	FTransform GetProjSpawnTransform();
-	
+
+	//used for multicasr effects of weapon's shot
 	UFUNCTION(NetMulticast,Unreliable)
 	void Multicast_PlayShotFX();
 	

@@ -32,7 +32,7 @@ void UCharacteristicsComponent::OnComponentDestroyed(bool bDestroyingHierarchy)
 void UCharacteristicsComponent::TakeDamage( AActor* DamagedActor, float Damage, const UDamageType* DamageType, FVector Origin, FHitResult HitInfo, AController* InstigatedBy,
 											AActor* DamageCauser )
 {
-	AddHealth(-Damage);
+	AddHealth(-FMath::RoundHalfFromZero(Damage));
 }
 
 UCharacteristicsComponent* GetCharacteristicsComponent(AActor* InActor)

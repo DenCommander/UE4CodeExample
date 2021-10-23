@@ -39,7 +39,7 @@ void UHudWidget::UpdateWidget()
 		AmmoIcon->SetBrush(AmmoData->Icon);				
 	}	
 	
-	AmmoCount->SetText(FText::Format(LOCTEXT("AmmoText", "{0}"), GetCashedInventory()->AmmoCount(CurAmmoType)));		
+	AmmoCount->SetText(FText::Format(LOCTEXT("AmmoText", "{0}"), GetCashedInventory()->GetAmmoCount(CurAmmoType)));		
 	HealthCount->SetText(FText::Format(LOCTEXT("HealthText", "{0}"), GetCashedCharacteristics()->GetHealth()));		
 }
 

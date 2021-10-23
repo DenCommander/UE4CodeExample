@@ -183,13 +183,15 @@ void ADSE_Projectile::Explode()
 	UGameplayStatics::PlaySoundAtLocation(this, ExplodeSound, GetActorLocation());
 	
 	SetActorHiddenInGame(true);
+	
 	if (UKismetSystemLibrary::IsServer(this))
 	{
 		TArray<AActor*> IgnoredActors;
 
-		UGameplayStatics::ApplyRadialDamage(this, Damage, SpawnTransform.GetLocation(), DamageRadius,
-				UDamageType::StaticClass(),	IgnoredActors, this, nullptr,
-				true, ECC_Visibility);
+		UGameplayStatics::ApplyRadialDamageWithFalloff(this, Damage, 0.f,
+			SpawnTransform.GetLocation(), DamageRadius*0.5f,DamageRadius,
+			1.0f, UDamageType::StaticClass(),	IgnoredActors, this, nullptr,
+			ECC_Visibility);
 
 		SetLifeSpan(0.5f);
 	}

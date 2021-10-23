@@ -29,13 +29,16 @@ class ADSE_Projectile : public AActor, public IIInteractiveActor
 	FTimerHandle ExplodeTH;
 
 	FTimerHandle WidgetVisibilityOffTH;
-	
+
+	/** Time before the explode if projectile attached to pawn */
 	UPROPERTY(EditDefaultsOnly, Category=Projectile)
 	float TimeToExplodeIfHitted;
 
+	/** Time before the explode if projectile missed to pawn */
 	UPROPERTY(EditDefaultsOnly, Category=Projectile)
 	float TimeToExplodeIfMissed;
-
+	
+	/** how many seconds the projectile will blink before explode */
 	UPROPERTY(EditDefaultsOnly, Category=Blinking)
 	float BlinkingTime;	
 
@@ -115,9 +118,7 @@ protected:
 
 	virtual void Destroyed() override;
 
-	void EnableBlinking();
-
-	
+	void EnableBlinking();	
 
 	//calculates color index to pass to material and switch colors of projectile (for blinking)
 	float GetCurrentProjColorIndex(float DeltaTime);	
